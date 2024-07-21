@@ -1,0 +1,71 @@
+<?php
+$title = 'Add new post';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<?php
+// This provides a default CSS class and placeholder text for the title element:
+$post = $form->get('title');
+$post->setAttribute('class', 'form-control');
+$post->setAttribute('placeholder', 'post title');
+
+// This provides a default CSS class and placeholder text for the description element:
+$description = $form->get('description');
+$description->setAttribute('class', 'form-control');
+$description->setAttribute('placeholder', 'description');
+
+// This provides a default CSS class and placeholder text for the user element:
+$user = $form->get('user');
+$user->setAttribute('class', 'form-control');
+$user->setAttribute('placeholder', 'user');
+
+// This provides CSS classes for the submit button:
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-primary');
+
+// Add an element for file upload
+$image = new \Laminas\Form\Element\File('image');
+$image->setAttribute('class', 'form-control');
+$image->setAttribute('accept', 'image/*');
+$image->setLabel('Upload Image');
+$form->add($image);
+
+$form->setAttribute('action', $this->url('post', ['action' => 'add']));
+$form->setAttribute('enctype', 'multipart/form-data'); // Set form encoding type for file upload
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+<?php
+// Wrap the elements in divs marked as form groups, and render the
+// label, element, and errors separately within
+?>
+<div class="form-group">
+    <?= $this->formLabel($post) ?>
+    <?= $this->formElement($post) ?>
+    <?= $this->formElementErrors()->render($post, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($description) ?>
+    <?= $this->formElement($description) ?>
+    <?= $this->formElementErrors()->render($description, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($user) ?>
+    <?= $this->formElement($user) ?>
+    <?= $this->formElementErrors()->render($user, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($image) ?>
+    <?= $this->formElement($image) ?>
+    <?= $this->formElementErrors()->render($image, ['class' => 'help-block']) ?>
+</div>
+
+<?php
+echo $this->formSubmit($submit);
+echo $this->formHidden($form->get('id'));
+echo $this->form()->closeTag();
+?>

@@ -1,0 +1,38 @@
+<?php
+
+$title = 'My posts';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    <a href="<?= $this->url('post', ['action' => 'add']) ?>">Add new post</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Created Time</th>
+        <th>Author</th>
+        <th>Image</th>
+        <th>&nbsp;</th>
+    </tr>
+
+    <?php foreach ($posts as $post) : ?>
+        <tr>
+            <td><?= $this->escapeHtml($post->getTitle()) ?></td>
+            <td><?= $this->escapeHtml($post->getDescription()) ?></td>
+            <td><?= $this->escapeHtml($post->getFormattedCreatedAt()) ?></td>
+            <td><?= $this->escapeHtml($post->getUser()) ?></td>
+            <td>
+                <?php if (!empty($post->getImage())) : ?>
+                    <img src="<?= $this->escapeHtmlAttr($this->basePath(substr($post->getImage(), 8))) ?>" alt="<?= $this->escapeHtmlAttr($post->getTitle()) ?>" width="100">
+                <?php endif; ?>
+            </td>
+            <td>
+                <a href="<?= $this->url('post', ['action' => 'edit', 'id' => $post->getId()]) ?>">Edit</a>
+                <a href="<?= $this->url('post', ['action' => 'delete', 'id' => $post->getId()]) ?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
